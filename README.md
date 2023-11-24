@@ -1,18 +1,29 @@
-Web Scraper
-This Python script is a web scraper that fetches data from a user-specified website and stores it in a CSV file.
+# Web Scraper
 
-How it works
-The script prompts the user to enter the base URL of the website they want to scrape and the number of pages to scrape. It then loops through each page, sends a GET request to the page, and handles any HTTP or other errors that might occur during the request.
+This script scrapes a website for specific HTML tags and saves the data in a CSV or JSON file.
 
-The script uses BeautifulSoup to parse the HTML response from each page and finds all 'p' tags. The text of each 'p' tag is then written to a CSV file named 'data.csv'.
+## Usage
 
-Dependencies
-This script requires the following Python libraries:
+Run the script with the following command-line arguments:
+
+```bash
+python main.py base_url num_pages tag --class_name class_name --format format
+```
+base_url: The base URL of the website to scrape.
+num_pages: The number of pages to scrape.
+tag: The HTML tag to scrape.
+class_name (optional): The class of the HTML tag to scrape.
+format (optional): The format to save the data in (csv or json). Default is csv.
+The script respects the website's robots.txt file and uses multithreading to scrape multiple pages at the same time. It logs the progress and any errors to a file named 'web_scraper.log'.
+
+Requirements:
+
+Python 3
 
 requests
-csv
-BeautifulSoup
-Usage
-To run the script, simply execute the main.py file in your Python environment. When prompted, enter the base URL of the website you want to scrape (e.g., 'https://example.com/page') and the number of pages to scrape.
 
-Please note that the structure of the website being scraped can affect the results. If the website does not use 'p' tags to store the data you want to scrape, you will need to modify the script to look for the correct tags.
+BeautifulSoup
+
+urllib
+
+

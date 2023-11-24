@@ -5,6 +5,8 @@ import logging
 import argparse
 from bs4 import BeautifulSoup
 from concurrent.futures import ThreadPoolExecutor
+from urllib.parse import urlparse, urljoin
+from urllib.robotparser import RobotFileParser
 
 # Set up logging
 logging.basicConfig(filename='web_scraper.log', level=logging.INFO)
@@ -18,10 +20,23 @@ parser.add_argument('--class_name', help='The class of the HTML tag to scrape (o
 parser.add_argument('--format', choices=['csv', 'json'], default='csv', help='The format to save the data in (default: csv)')
 args = parser.parse_args()
 
+# Set up robots.txt parser
+parsed_url = urlparse(args.base_url)
+robots_url = urljoin(args.base_url, '/robots.txt')
+rp = RobotFileParser()
+rp.set_url(robots_url)
+rp.read()
+
 # Define the function to scrape a page
 def scrape_page(page_num):
     url = args.base_url + str(page_num)
     headers = {'User-Agent': 'Mozilla/5.0'}
+
+    # Check if we're allowed to scrape the page
+    if not rp.can_fetch('*', url):
+        logging.warning(f'Not allowed to scrape page {page_num} according to robots.txt')
+        return
+
     try:
         response = requests.get(url, headers=headers)
         response.raise_for_status()
