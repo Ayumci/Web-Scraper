@@ -1,4 +1,4 @@
-#Web Scraper
+Web Scraper
 This Python script is a web scraper that fetches data from a user-specified website and stores it in a CSV file.
 
 How it works
